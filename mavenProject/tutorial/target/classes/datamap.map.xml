@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-map xmlns="http://cayenne.apache.org/schema/9/modelMap"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/9/modelMap https://cayenne.apache.org/schema/9/modelMap.xsd"
+	 project-version="9">
+	<property name="defaultPackage" value="org.example.cayenne.persistent"/>
+	<db-entity name="CLASSIFIKATOR">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="NODE_NAME" type="VARCHAR" length="200"/>
+		<db-attribute name="PARENT_ID" type="INTEGER"/>
+	</db-entity>
+	<db-entity name="EDENICA_IZMERENIA">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="TITLE" type="VARCHAR" length="200"/>
+	</db-entity>
+	<db-entity name="ENUM">
+		<db-attribute name="GROUPING" type="VARCHAR" length="200"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="VALUE" type="VARCHAR" length="200"/>
+	</db-entity>
+	<db-entity name="IZDELIE">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ID_PARAMETRA" type="INTEGER"/>
+		<db-attribute name="ID_TYPE_OF_PARAMETR" type="INTEGER"/>
+	</db-entity>
+	<db-entity name="META_PARAMS">
+		<db-attribute name="ID_META_PARAMETRA" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="NAME" type="VARCHAR" length="200"/>
+	</db-entity>
+	<db-entity name="PARAMETR">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ID_META_PARAMS" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="META_PARAMETR_NAME " type="VARCHAR" length="200"/>
+		<db-attribute name="PARAM_CLASSA_NAME" type="VARCHAR" length="200"/>
+	</db-entity>
+	<db-entity name="PARAM_CLASSA">
+		<db-attribute name="CLASSIFIKATOR_ID" type="INTEGER"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ID_PARAMETRA" type="INTEGER"/>
+	</db-entity>
+	<db-entity name="TYPES_OF_PARAMETER">
+		<db-attribute name="ID_TYPE" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="NAME" type="VARCHAR" length="200"/>
+	</db-entity>
+	<db-entity name="VALUE">
+		<db-attribute name="EnumVALUE" type="INTEGER" length="200"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ID_EdinicaIzmerenia" type="INTEGER"/>
+		<db-attribute name="ID_IZDELIA" type="INTEGER"/>
+		<db-attribute name="ID_PARAMERTA" type="INTEGER"/>
+		<db-attribute name="IsEnum" type="BOOLEAN"/>
+		<db-attribute name="VALUE" type="VARCHAR" length="200"/>
+	</db-entity>
+	<obj-entity name="Classifikator" className="org.example.cayenne.persistent.Classifikator" dbEntityName="CLASSIFIKATOR">
+		<obj-attribute name="nodeName" type="java.lang.String" db-attribute-path="NODE_NAME"/>
+	</obj-entity>
+	<obj-entity name="EdenicaIzmerenia" className="org.example.cayenne.persistent.EdenicaIzmerenia" dbEntityName="EDENICA_IZMERENIA">
+		<obj-attribute name="title" type="java.lang.String" db-attribute-path="TITLE"/>
+	</obj-entity>
+	<obj-entity name="Enum" className="org.example.cayenne.persistent.Enum" dbEntityName="ENUM">
+		<obj-attribute name="grouping" type="java.lang.String" db-attribute-path="GROUPING"/>
+		<obj-attribute name="value" type="java.lang.String" db-attribute-path="VALUE"/>
+	</obj-entity>
+	<obj-entity name="Izdelie" className="org.example.cayenne.persistent.Izdelie" dbEntityName="IZDELIE">
+	</obj-entity>
+	<obj-entity name="MetaParams" className="org.example.cayenne.persistent.MetaParams" dbEntityName="META_PARAMS">
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="NAME"/>
+	</obj-entity>
+	<obj-entity name="ParamClassa" className="org.example.cayenne.persistent.ParamClassa" dbEntityName="PARAM_CLASSA">
+	</obj-entity>
+	<obj-entity name="Parametr" className="org.example.cayenne.persistent.Parametr" dbEntityName="PARAMETR">
+		<obj-attribute name="metaParametrName_" type="java.lang.String" db-attribute-path="META_PARAMETR_NAME "/>
+		<obj-attribute name="paramClassaName" type="java.lang.String" db-attribute-path="PARAM_CLASSA_NAME"/>
+	</obj-entity>
+	<obj-entity name="TypesOfParameter" className="org.example.cayenne.persistent.TypesOfParameter" dbEntityName="TYPES_OF_PARAMETER">
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="NAME"/>
+	</obj-entity>
+	<obj-entity name="Value" className="org.example.cayenne.persistent.Value" dbEntityName="VALUE">
+		<obj-attribute name="isEnum" type="boolean" db-attribute-path="IsEnum"/>
+		<obj-attribute name="value" type="java.lang.String" db-attribute-path="VALUE"/>
+	</obj-entity>
+	<db-relationship name="paramsClassa" source="CLASSIFIKATOR" target="PARAM_CLASSA" toMany="true">
+		<db-attribute-pair source="ID" target="CLASSIFIKATOR_ID"/>
+	</db-relationship>
+	<db-relationship name="toChields" source="CLASSIFIKATOR" target="CLASSIFIKATOR" toMany="true">
+		<db-attribute-pair source="ID" target="PARENT_ID"/>
+	</db-relationship>
+	<db-relationship name="toParent" source="CLASSIFIKATOR" target="CLASSIFIKATOR" toMany="false">
+		<db-attribute-pair source="PARENT_ID" target="ID"/>
+	</db-relationship>
+	<db-relationship name="untitledRel" source="EDENICA_IZMERENIA" target="VALUE" toMany="true">
+		<db-attribute-pair source="ID" target="ID_EdinicaIzmerenia"/>
+	</db-relationship>
+	<db-relationship name="untitledRel" source="ENUM" target="VALUE" toMany="false">
+		<db-attribute-pair source="ID" target="EnumVALUE"/>
+	</db-relationship>
+	<db-relationship name="untitledRel" source="IZDELIE" target="TYPES_OF_PARAMETER" toMany="false">
+		<db-attribute-pair source="ID_TYPE_OF_PARAMETR" target="ID_TYPE"/>
+	</db-relationship>
+	<db-relationship name="untitledRel1" source="IZDELIE" target="VALUE" toMany="true">
+		<db-attribute-pair source="ID" target="ID_IZDELIA"/>
+	</db-relationship>
+	<db-relationship name="untitledRel2" source="IZDELIE" target="PARAMETR" toMany="false">
+		<db-attribute-pair source="ID_PARAMETRA" target="ID"/>
+	</db-relationship>
+	<db-relationship name="parametrs" source="META_PARAMS" target="PARAMETR" toMany="true">
+		<db-attribute-pair source="ID_META_PARAMETRA" target="ID_META_PARAMS"/>
+	</db-relationship>
+	<db-relationship name="meta_params" source="PARAMETR" target="META_PARAMS" toMany="false">
+		<db-attribute-pair source="ID_META_PARAMS" target="ID_META_PARAMETRA"/>
+	</db-relationship>
+	<db-relationship name="paramsClassa" source="PARAMETR" target="PARAM_CLASSA" toMany="true">
+		<db-attribute-pair source="ID" target="ID_PARAMETRA"/>
+	</db-relationship>
+	<db-relationship name="untitledRel" source="PARAMETR" target="IZDELIE" toMany="true">
+		<db-attribute-pair source="ID" target="ID_PARAMETRA"/>
+	</db-relationship>
+	<db-relationship name="untitledRel1" source="PARAMETR" target="VALUE" toMany="true">
+		<db-attribute-pair source="ID" target="ID_PARAMERTA"/>
+	</db-relationship>
+	<db-relationship name="classsifators" source="PARAM_CLASSA" target="CLASSIFIKATOR" toMany="false">
+		<db-attribute-pair source="CLASSIFIKATOR_ID" target="ID"/>
+	</db-relationship>
+	<db-relationship name="params" source="PARAM_CLASSA" target="PARAMETR" toMany="false">
+		<db-attribute-pair source="ID_PARAMETRA" target="ID"/>
+	</db-relationship>
+	<db-relationship name="untitledRel" source="TYPES_OF_PARAMETER" target="IZDELIE" toMany="true">
+		<db-attribute-pair source="ID_TYPE" target="ID_TYPE_OF_PARAMETR"/>
+	</db-relationship>
+	<db-relationship name="untitledRel" source="VALUE" target="IZDELIE" toMany="false">
+		<db-attribute-pair source="ID_IZDELIA" target="ID"/>
+	</db-relationship>
+	<db-relationship name="untitledRel1" source="VALUE" target="PARAMETR" toMany="false">
+		<db-attribute-pair source="ID_PARAMERTA" target="ID"/>
+	</db-relationship>
+	<db-relationship name="untitledRel2" source="VALUE" target="EDENICA_IZMERENIA" toMany="false">
+		<db-attribute-pair source="ID_EdinicaIzmerenia" target="ID"/>
+	</db-relationship>
+	<db-relationship name="untitledRel3" source="VALUE" target="ENUM" toMany="false">
+		<db-attribute-pair source="EnumVALUE" target="ID"/>
+	</db-relationship>
+	<obj-relationship name="paramsClassa" source="Classifikator" target="ParamClassa" deleteRule="Deny" db-relationship-path="paramsClassa"/>
+	<obj-relationship name="toChields" source="Classifikator" target="Classifikator" deleteRule="Deny" db-relationship-path="toChields"/>
+	<obj-relationship name="toParent" source="Classifikator" target="Classifikator" deleteRule="Nullify" db-relationship-path="toParent"/>
+	<obj-relationship name="values" source="EdenicaIzmerenia" target="Value" deleteRule="Deny" db-relationship-path="untitledRel"/>
+	<obj-relationship name="value1" source="Enum" target="Value" deleteRule="Nullify" db-relationship-path="untitledRel"/>
+	<obj-relationship name="parametr" source="Izdelie" target="Parametr" deleteRule="Nullify" db-relationship-path="untitledRel2"/>
+	<obj-relationship name="typesOfParameter" source="Izdelie" target="TypesOfParameter" deleteRule="Nullify" db-relationship-path="untitledRel"/>
+	<obj-relationship name="values" source="Izdelie" target="Value" deleteRule="Deny" db-relationship-path="untitledRel1"/>
+	<obj-relationship name="parametrs" source="MetaParams" target="Parametr" deleteRule="Deny" db-relationship-path="parametrs"/>
+	<obj-relationship name="classsifators" source="ParamClassa" target="Classifikator" deleteRule="Nullify" db-relationship-path="classsifators"/>
+	<obj-relationship name="params" source="ParamClassa" target="Parametr" deleteRule="Nullify" db-relationship-path="params"/>
+	<obj-relationship name="izdelies" source="Parametr" target="Izdelie" deleteRule="Deny" db-relationship-path="untitledRel"/>
+	<obj-relationship name="meta_params" source="Parametr" target="MetaParams" deleteRule="Nullify" db-relationship-path="meta_params"/>
+	<obj-relationship name="paramsClassa" source="Parametr" target="ParamClassa" deleteRule="Deny" db-relationship-path="paramsClassa"/>
+	<obj-relationship name="values" source="Parametr" target="Value" deleteRule="Deny" db-relationship-path="untitledRel1"/>
+	<obj-relationship name="izdelies" source="TypesOfParameter" target="Izdelie" deleteRule="Deny" db-relationship-path="untitledRel"/>
+	<obj-relationship name="edenicaIzmerenia" source="Value" target="EdenicaIzmerenia" deleteRule="Nullify" db-relationship-path="untitledRel2"/>
+	<obj-relationship name="enums" source="Value" target="Enum" deleteRule="Deny" db-relationship-path="untitledRel3"/>
+	<obj-relationship name="izdelie" source="Value" target="Izdelie" deleteRule="Nullify" db-relationship-path="untitledRel"/>
+	<obj-relationship name="parametr" source="Value" target="Parametr" deleteRule="Nullify" db-relationship-path="untitledRel1"/>
+</data-map>
